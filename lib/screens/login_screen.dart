@@ -1,9 +1,56 @@
 import 'package:flutter/material.dart';
 import 'listado_screen.dart';
 import 'registro_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  LoginScreen({Key? key}) : super(key: key);
+
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+  Future<void> login(BuildContext context) async {
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+      );
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const ListadoScreen()),
+      );
+    } catch (e) {
+      mostrarAlerta(context, 'hubo un error al iniciar sesion', e.toString());
+    }
+  }
+
+  void mostrarAlerta(BuildContext context, String titulo, String mensaje) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(titulo),
+        content: Text(mensaje),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cerrar'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildTextField(String label, TextEditingController controller,
+      {bool obscureText = false}) {
+    return TextField(
+      controller: controller,
+      obscureText: obscureText,
+      decoration: InputDecoration(
+        labelText: label,
+        border: const OutlineInputBorder(),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -11,81 +58,50 @@ class LoginScreen extends StatelessWidget {
       body: Stack(
         fit: StackFit.expand,
         children: [
-          //BACKGROUND
           Image.asset(
             'assets/loginBackground.png',
             fit: BoxFit.cover,
           ),
-          //AQUI EMPIEZA CONTENIDO DE LA PANTALLA
-          Padding(
+          SingleChildScrollView(
             padding: const EdgeInsets.all(16.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                //ENCABEZADO
+                const SizedBox(height: 100),
                 const Text(
-                  'Inicio de Sesión',
+                  'Inicio de sesión',
                   style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
                 ),
-                const SizedBox(height: 20),
-
-                const TextField(
-                  decoration: InputDecoration(
-                    labelText: 'Email',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
+                const SizedBox(height: 40),
+                buildTextField('Email', emailController),
                 const SizedBox(height: 16),
-
-                const TextField(
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    labelText: 'Contraseña',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                
-                //BOTON DE LOGIN
+                buildTextField('Contraseña', passwordController,
+                    obscureText: true),
+                const SizedBox(height: 30),
                 ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ListadoScreen()),
-                    );
-                  },
+                  onPressed: () => login(context),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.deepPurple,
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 40, vertical: 15),
+                        horizontal: 60, vertical: 15),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
+                        borderRadius: BorderRadius.circular(20)),
                   ),
                   child: const Text('Ingresar'),
                 ),
-                const SizedBox(height: 20),
-                //LLEVA A PANTALLA DE REGISTRO SI NO TIENE CUENTA
                 TextButton(
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => const RegistroScreen()),
+                      MaterialPageRoute(builder: (context) => RegistroScreen()),
                     );
                   },
                   child: const Text(
-                    'No tienes cuenta? Regístrate aquí!',
-                    style: TextStyle(
-                      color: Colors.deepPurple,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    'Cree su cuenta aqui',
+                    style: TextStyle(color: Colors.white),
                   ),
                 ),
               ],

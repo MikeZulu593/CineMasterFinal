@@ -1,7 +1,8 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'reproduccion_screen.dart';
+import 'login_screen.dart';
 
 class ListadoScreen extends StatefulWidget {
   const ListadoScreen({Key? key}) : super(key: key);
@@ -11,41 +12,76 @@ class ListadoScreen extends StatefulWidget {
 }
 
 class ListadoScreenState extends State<ListadoScreen> {
-  List<dynamic> categorias = [];
+  List<Map<String, dynamic>> categorias = [];
 
   @override
-  //INICIALIZA LA CARGA DE LOS DATOS DE LAS PELICULAS PROVENIENTES DEL JSON
   void initState() {
     super.initState();
-    cargarPeliculas();
+    cargarCategoriasDesdeFirebase();
   }
 
+  Future<void> cargarCategoriasDesdeFirebase() async {
+    try {
+      final DatabaseReference dbRef =
+          FirebaseDatabase.instance.ref('categorias');
+      final DataSnapshot snapshot = await dbRef.get();
 
-// SE USA rootBundle.loadString PARA LEER EL JSON,  json.decode PARA DECODIFICAR 
-//SE USA SET STATE PARA ACTUALIZAR EL ESTADO DEL WIDGET
-Future<void> cargarPeliculas() async {
-  final String response = await rootBundle.loadString('assets/peliculas.json');
-  final data = json.decode(response);
-  setState(() {
-    categorias = data["categorias"];
-  });
-}
+      if (snapshot.exists) {
+        final data = Map<String, dynamic>.from(snapshot.value as Map);
+        setState(() {
+          categorias = data.entries.map((entry) {
+            return {
+              "nombre": entry.key,
+              "peliculas": List<Map<String, dynamic>>.from(
+                (entry.value["peliculas"] as List)
+                    .map((e) => Map<String, dynamic>.from(e)),
+              ),
+            };
+          }).toList();
+        });
+      } else {
+        mostrarMensaje('No se encontraron datos en la base de datos');
+      }
+    } catch (e) {
+      mostrarMensaje('Error al cargar datos: $e');
+    }
+  }
 
-  ////////////E M P I E Z A    A     C O N S T R U I R     E L    W I D G E T////////////
+  void mostrarMensaje(String mensaje) {
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(mensaje)));
+  }
+
+  Future<void> cerrarSesion(BuildContext context) async {
+    await FirebaseAuth.instance.signOut();
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => LoginScreen()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Películas Disponibles')),
+      appBar: AppBar(
+        title: const Text('Películas Disponibles'),
+        actions: [
+          IconButton(
+              icon: const Icon(Icons.logout),
+              onPressed: () => cerrarSesion(context)),
+        ],
+      ),
       body: categorias.isEmpty
           ? const Center(child: CircularProgressIndicator())
           : ListView(
-              children: categorias.map((categoria) => buildCategoria(categoria, context)).toList(),
+              children: categorias
+                  .map((categoria) => construirCategoria(categoria))
+                  .toList(),
             ),
     );
   }
 
-  //C A R G A    D E    U N A    C A T E G O R I A///
-  Widget buildCategoria(Map<String, dynamic> categoria, BuildContext context) {
+  Widget construirCategoria(Map<String, dynamic> categoria) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -54,23 +90,22 @@ Future<void> cargarPeliculas() async {
           child: Text(
             categoria["nombre"],
             style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.deepPurple,
-            ),
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.deepPurple),
           ),
         ),
         Column(
           children: List<Widget>.from(
-            categoria["peliculas"].map((pelicula) => buildTarjeta(pelicula, context)),
+            categoria["peliculas"]
+                .map((pelicula) => construirTarjeta(pelicula)),
           ),
         ),
       ],
     );
   }
 
-  //C A R G A    D E    U N A    T A R J E T A///
-  Widget buildTarjeta(Map<String, dynamic> pelicula, BuildContext context) {
+  Widget construirTarjeta(Map<String, dynamic> pelicula) {
     return Card(
       child: ListTile(
         leading: Image.network(
@@ -84,7 +119,10 @@ Future<void> cargarPeliculas() async {
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const ReproduccionScreen()),
+            MaterialPageRoute(
+              builder: (context) =>
+                  ReproduccionScreen(videoId: pelicula["videoId"]),
+            ),
           );
         },
       ),

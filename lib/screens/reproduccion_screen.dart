@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:youtube_player_embed/youtube_player_embed.dart';
 
 class ReproduccionScreen extends StatelessWidget {
-  const ReproduccionScreen({Key? key}) : super(key: key);
+  final String videoId;
+  const ReproduccionScreen({Key? key, required this.videoId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Reproductor')),
+      appBar: AppBar(title: const Text('Reproducción del trailer')),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            Icon(Icons.play_circle_outline, size: 100, color: Colors.blue), 
-            SizedBox(height: 20),
-            Text('Ejemplo de reproductor', style: TextStyle(fontSize: 18)),
-          ],
+        child: YoutubePlayerView(
+          videoId: videoId,
+          autoPlay: true,
+          mute: false,
+          enabledShareButton: false,
+          aspectRatio: 16 / 9,
         ),
       ),
     );

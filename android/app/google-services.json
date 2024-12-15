@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "694320993394",
+    "project_id": "appflutter-b3ebb",
+    "storage_bucket": "appflutter-b3ebb.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:694320993394:android:5b0d0d06eb5e2ab35c5eeb",
+        "android_client_info": {
+          "package_name": "com.example.taller"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCCA9-R6flsMSC8Q4_Z3Ec_Pygt0UK34js"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

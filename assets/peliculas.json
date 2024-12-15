@@ -1,55 +1,59 @@
 {
-    "categorias": [
-      {
-        "nombre": "Populares",
+    "categorias": {
+      "Populares": {
         "peliculas": [
           {
             "titulo": "Ahí afuera",
             "genero": "Terror - Apocalipsis",
-            "portada": "https://static.wikia.nocookie.net/doblaje/images/5/5c/Ahi_afuera_-_Poster.jpg/revision/latest?cb=20241017210705&path-prefix=es"
+            "portada": "https://static.wikia.nocookie.net/doblaje/images/5/5c/Ahi_afuera_-_Poster.jpg/revision/latest?cb=20241017210705&path-prefix=es",
+            "videoId": "tvNw7r6SUBk"
           },
           {
-            "titulo": "Pedro Páramo",
+            "titulo": "Pedro Páramo",
             "genero": "Drama",
-            "portada": "https://pics.filmaffinity.com/pedro_paramo-443807374-mmed.jpg"
+            "portada": "https://pics.filmaffinity.com/pedro_paramo-443807374-mmed.jpg",
+            "videoId": "ZqtdUc6iev4"
           },
           {
             "titulo": "Estación Fantasma",
             "genero": "Terror",
-            "portada": "https://pics.filmaffinity.com/The_Ghost_Station-575564787-large.jpg"
+            "portada": "https://pics.filmaffinity.com/The_Ghost_Station-575564787-large.jpg",
+            "videoId": "gHeWP9R6-eU"
           }
         ]
       },
-      {
-        "nombre": "Tendencias",
+      "Tendencias": {
         "peliculas": [
           {
             "titulo": "Moana 2",
             "genero": "Animación",
-            "portada": "https://lumiere-a.akamaihd.net/v1/images/garland_instagram_dom_payoff_poster_las_30f591ca.jpeg?region=0%2C0%2C800%2C1000"
+            "portada": "https://lumiere-a.akamaihd.net/v1/images/garland_instagram_dom_payoff_poster_las_30f591ca.jpeg?region=0%2C0%2C800%2C1000",
+            "videoId": "Bk1Hf0FtR7k"
           },
           {
             "titulo": "Wicked",
-            "genero": "Fantasia",
-            "portada": "https://es.web.img2.acsta.net/img/4a/a3/4aa3265d76c8d07e0315f48a76205386.jpg"
+            "genero": "Fantasía",
+            "portada": "https://es.web.img2.acsta.net/img/4a/a3/4aa3265d76c8d07e0315f48a76205386.jpg",
+            "videoId": "7yT843zVIAw"
           }
         ]
       },
-      {
-        "nombre": "Nuevas Llegadas",
+      "Nuevas Llegadas": {
         "peliculas": [
           {
             "titulo": "Gladiador 2",
             "genero": "Histórico - Épico",
-            "portada": "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcRhNTn1et8fWBDFV6cezK7oFKIHq42FJ42JEjRa3UJyPXbzHyaR"
+            "portada": "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcRhNTn1et8fWBDFV6cezK7oFKIHq42FJ42JEjRa3UJyPXbzHyaR",
+            "videoId": "qwMbpO20_YY"
           },
           {
             "titulo": "1992",
             "genero": "Drama",
-            "portada": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJhLc9n2dAjLRTYBFMdegAq5_I9ydfKqi1lg&s"
+            "portada": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJhLc9n2dAjLRTYBFMdegAq5_I9ydfKqi1lg&s",
+            "videoId": "0OEqgHD3br0"
           }
         ]
       }
-    ]
+    }
   }
   
