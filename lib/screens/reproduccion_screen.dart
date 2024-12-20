@@ -1,23 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:youtube_player_embed/youtube_player_embed.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
-class ReproduccionScreen extends StatelessWidget {
-  final String videoId;
-  const ReproduccionScreen({Key? key, required this.videoId}) : super(key: key);
+class ReproduccionScreen extends StatefulWidget {
+  final String megaUrl; //URL DEL TRAILER EN MEGA
+  const ReproduccionScreen({Key? key, required this.megaUrl}) : super(key: key);
+
+  @override
+  _ReproduccionScreenState createState() => _ReproduccionScreenState();
+}
+
+class _ReproduccionScreenState extends State<ReproduccionScreen> {
+  late final WebViewController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..loadRequest(Uri.parse(widget.megaUrl));
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Reproducción del trailer')),
-      body: Center(
-        child: YoutubePlayerView(
-          videoId: videoId,
-          autoPlay: true,
-          mute: false,
-          enabledShareButton: false,
-          aspectRatio: 16 / 9,
-        ),
+      appBar: AppBar(
+        title: const Text('Reproducción del trailer'),
       ),
+      body: WebViewWidget(controller: _controller),
     );
   }
 }

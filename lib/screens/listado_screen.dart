@@ -40,10 +40,10 @@ class ListadoScreenState extends State<ListadoScreen> {
           }).toList();
         });
       } else {
-        mostrarMensaje('No se encontraron datos en la base de datos');
+        mostrarMensaje('No hay datos para mostrar');
       }
     } catch (e) {
-      mostrarMensaje('Error al cargar datos: $e');
+      mostrarMensaje('Error: $e');
     }
   }
 
@@ -106,26 +106,27 @@ class ListadoScreenState extends State<ListadoScreen> {
   }
 
   Widget construirTarjeta(Map<String, dynamic> pelicula) {
-    return Card(
-      child: ListTile(
-        leading: Image.network(
-          pelicula["portada"],
-          width: 50,
-          height: 50,
-          fit: BoxFit.cover,
-        ),
-        title: Text(pelicula["titulo"]),
-        subtitle: Text(pelicula["genero"]),
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) =>
-                  ReproduccionScreen(videoId: pelicula["videoId"]),
-            ),
-          );
-        },
+  return Card(
+    child: ListTile(
+      leading: Image.network(
+        pelicula["portada"],
+        width: 50,
+        height: 50,
+        fit: BoxFit.cover,
       ),
-    );
-  }
+      title: Text(pelicula["titulo"]),
+      subtitle: Text(pelicula["genero"]),
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                ReproduccionScreen(megaUrl: pelicula["megaUrl"]),
+          ),
+        );
+      },
+    ),
+  );
+}
+
 }

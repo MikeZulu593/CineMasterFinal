@@ -13,6 +13,8 @@ dependencies:
   firebase_auth: ^5.3.4
   firebase_database: ^11.2.0
   youtube_player_embed: ^1.0.9
+  webview_flutter: ^4.0.7
+
 
 dev_dependencies:
   flutter_test:
